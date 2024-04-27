@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:buku_text_map/Utils/colors.dart';
+import 'package:buku_text_map/Screen/sign_in.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -12,65 +13,60 @@ class SignUp extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
-            colors: [
-              backgroundColor2,
-              backgroundColor2,
-              backgroundColor4,
-            ],
+            colors: [backgroundColor2, backgroundColor2, backgroundColor4],
           ),
         ),
         child: SafeArea(
-          child: ListView(
-            children: [
-              SizedBox(height: size.height * 0.03),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Back button aligned to the left
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      SizedBox(width: 40), // Adjust as needed for spacing
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  Text(
+                    "BukuText.ly",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                      color: textColor2,
+                      height: 1.2,
                     ),
-
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Text(
-                  "BukuText.ly",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26, color: textColor2, height: 1.2),
-                ),
-              ),
-              SizedBox(height: size.height * 0.03),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: inputFile(label: "Username"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: inputFile(label: "Email"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: inputFile(label: "Password", obscureText: true),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: inputFile(label: "Confirm Password", obscureText: true),
-              ),
-              SizedBox(height: size.height * 0.01),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: [
-                    Container(
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  inputFile(label: "Username"),
+                  SizedBox(height: 10),
+                  inputFile(label: "Email"),
+                  SizedBox(height: 10),
+                  inputFile(label: "Password", obscureText: true),
+                  SizedBox(height: 10),
+                  inputFile(label: "Confirm Password", obscureText: true),
+                  SizedBox(height: size.height * 0.02),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to Dashboard screen when Sign Up button is tapped
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignIn()),
+                      );
+                    },
+                    child: Container(
                       width: size.width,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
                         color: primaryColor,
                         borderRadius: BorderRadius.circular(10),
@@ -86,72 +82,52 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: size.height * 0.04),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 2,
-                          width: size.width * 0.2,
-                          color: Colors.black12,
+                  ),
+                  SizedBox(height: size.height * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      socialIcon("assets/images/google.png"),
+                      SizedBox(width: 10),
+                      socialIcon("assets/images/apple.png"),
+                      SizedBox(width: 10),
+                      socialIcon("assets/images/facebook.png"),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account? ",
+                        style: TextStyle(
+                          color: textColor2,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
-                        Text(
-                          "  Or continue with   ",
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to sign in page
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SignIn()),
+                          );
+                        },
+                        child: Text(
+                          "Sign In",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: textColor2,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Container(
-                          height: 2,
-                          width: size.width * 0.2,
-                          color: Colors.black12,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        socialIcon("assets/images/google.png"),
-                        SizedBox(width: 10),
-                        socialIcon("assets/images/apple.png"),
-                        SizedBox(width: 10),
-                        socialIcon("assets/images/facebook.png"),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.06),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Already have an account? ",
-                          style: TextStyle(
-                            color: textColor2,
+                            color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigate to sign in page
-                          },
-                          child: Text(
-                            "Sign In",
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                      )
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -177,19 +153,13 @@ class SignUp extends StatelessWidget {
     );
   }
 
-  Container myTextField(String hint, bool obscureText) {
+  Widget myTextField(String hint, bool obscureText) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 5,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: TextField(
         obscureText: obscureText,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 10,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
@@ -197,7 +167,7 @@ class SignUp extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           hintText: hint,
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             color: Colors.black45,
             fontSize: 14,
           ),
@@ -207,17 +177,14 @@ class SignUp extends StatelessWidget {
             color: Colors.black26,
           )
               : null,
-          ),
         ),
+      ),
     );
   }
 
   Container socialIcon(image) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 15,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -232,4 +199,3 @@ class SignUp extends StatelessWidget {
     );
   }
 }
-

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:buku_text_map/Screen/sign_in.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -34,10 +35,19 @@ class _MyWidgetState extends State<Dashboard> {
                         size: 30,
                         color: Colors.white,
                       ),
-                      Icon(
-                        Icons.logout,
-                        size: 30,
-                        color: Colors.white,
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to SignIn screen when logout icon is tapped
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SignIn()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.logout,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
