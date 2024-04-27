@@ -1,3 +1,4 @@
+import 'package:buku_text_map/Screen/view_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:buku_text_map/Screen/spash_screen.dart';
 
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MySplashScreen(),
+      // home: MySplashScreen(),
+      home: Dashboard(),
     );
   }
 }
