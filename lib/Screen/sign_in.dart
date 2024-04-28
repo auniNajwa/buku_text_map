@@ -63,7 +63,7 @@ class SignIn extends StatelessWidget {
                   SizedBox(height: size.height * 0.04),
                   myTextField("Enter username", Colors.white, size),
                   SizedBox(height: 10),
-                  myTextField("Password", Colors.black26, size),
+                  myTextField("Password", Colors.black26, size, obscureText: true),
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
@@ -178,10 +178,11 @@ class SignIn extends StatelessWidget {
     );
   }
 
-  Container myTextField(String hint, Color color, Size size) {
+  Container myTextField(String hint, Color color, Size size, {bool obscureText = false}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: 10),
       child: TextField(
+        obscureText: obscureText,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 22),
           fillColor: Colors.white,
