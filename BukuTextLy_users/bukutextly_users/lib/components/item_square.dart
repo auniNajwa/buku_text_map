@@ -6,11 +6,11 @@ class ItemSquare extends StatelessWidget {
   final Color textColor;
 
   const ItemSquare({
-    Key? key,
+    super.key,
     required this.textInSquare,
     required this.iconData,
     this.textColor = Colors.black,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

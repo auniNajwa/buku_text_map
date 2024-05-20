@@ -37,7 +37,7 @@ class FeaturesBoxWidget extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: icon.icon, // Access the icon property and use its icon
+          child: icon.icon,
         ),
       ),
     );

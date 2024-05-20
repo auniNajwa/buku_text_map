@@ -49,8 +49,8 @@ class ItemBoxWidget extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: Icon(
                   iconData,
-                  color: Colors.red, // Change color as needed
-                  size: 25, // Change size as needed
+                  color: Colors.red,
+                  size: 25,
                 ),
               ),
             ),
@@ -65,8 +65,8 @@ class ItemBoxWidget extends StatelessWidget {
                   textInSquare,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 12, // Change size as needed
-                    fontWeight: FontWeight.bold, // Change weight as needed
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
