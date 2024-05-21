@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "371502319545",
+    "project_id": "learningfirebase-f2741",
+    "storage_bucket": "learningfirebase-f2741.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371502319545:android:7373942f0857965fc85868",
+        "android_client_info": {
+          "package_name": "com.example.bukutextly_admins"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkteWj4A0_tZN4yoGZnzeR4urTvjFXa04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371502319545:android:182b703c28582ed3c85868",
+        "android_client_info": {
+          "package_name": "com.example.bukutextly_users"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkteWj4A0_tZN4yoGZnzeR4urTvjFXa04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371502319545:android:8343befa42a428c0c85868",
+        "android_client_info": {
+          "package_name": "com.example.learningfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkteWj4A0_tZN4yoGZnzeR4urTvjFXa04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
