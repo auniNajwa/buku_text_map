@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">371502319545</string>
+    <string name="google_api_key" translatable="false">AIzaSyBkteWj4A0_tZN4yoGZnzeR4urTvjFXa04</string>
+    <string name="google_app_id" translatable="false">1:371502319545:android:7373942f0857965fc85868</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBkteWj4A0_tZN4yoGZnzeR4urTvjFXa04</string>
+    <string name="google_storage_bucket" translatable="false">learningfirebase-f2741.appspot.com</string>
+    <string name="project_id" translatable="false">learningfirebase-f2741</string>
+</resources>
