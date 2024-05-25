@@ -1,7 +1,8 @@
 import 'package:bukutextly_users/pages/product_details_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProductBox extends StatelessWidget {
+class ProductBox extends StatefulWidget {
   final String productId;
   final String productName;
   final String productPrice;
@@ -10,7 +11,7 @@ class ProductBox extends StatelessWidget {
 
   const ProductBox({
     super.key,
-    required this.productId, // Add productId
+    required this.productId,
     required this.productName,
     required this.productPrice,
     required this.productCondition,
@@ -18,17 +19,35 @@ class ProductBox extends StatelessWidget {
   });
 
   @override
+  State<ProductBox> createState() => _ProductBoxState();
+}
+
+class _ProductBoxState extends State<ProductBox> {
+  bool _isFavorite = false;
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailsPage(
-              productId: productId, // Pass productId
+      onTap: () async {
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsPage(
+                productId: widget.productId,
+                userId: user.uid, // Pass userId
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          // Handle case where user is not logged in
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content:
+                    Text('You need to be logged in to view product details')),
+          );
+        }
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -46,14 +65,14 @@ class ProductBox extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFFF95E5E),
                   borderRadius: BorderRadius.circular(20),
-                  image: imageUrl.isNotEmpty
+                  image: widget.imageUrl.isNotEmpty
                       ? DecorationImage(
-                          image: NetworkImage(imageUrl),
+                          image: NetworkImage(widget.imageUrl),
                           fit: BoxFit.cover,
                         )
                       : null,
                 ),
-                child: imageUrl.isEmpty
+                child: widget.imageUrl.isEmpty
                     ? const Center(
                         child: Icon(Icons.image, size: 40, color: Colors.white))
                     : null,
@@ -64,22 +83,27 @@ class ProductBox extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      productName,
+                      widget.productName,
                       style: const TextStyle(
                         fontFamily: 'Manrope',
                         letterSpacing: 0,
                       ),
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.favorite_border,
-                      color: Theme.of(context).primaryColor,
+                      _isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: _isFavorite
+                          ? Colors.red
+                          : Theme.of(context).primaryColor,
                       size: 24,
                     ),
                     onPressed: () {
-                      print('IconButton pressed ...');
+                      setState(() {
+                        _isFavorite = !_isFavorite;
+                      });
                     },
                   ),
                 ],
@@ -90,14 +114,14 @@ class ProductBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      productPrice,
+                      widget.productPrice,
                       style: const TextStyle(
                         fontFamily: 'Manrope',
                         letterSpacing: 0,
                       ),
                     ),
                     Text(
-                      productCondition,
+                      widget.productCondition,
                       style: const TextStyle(
                           fontFamily: 'Manrope',
                           letterSpacing: 0,

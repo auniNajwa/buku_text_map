@@ -1,7 +1,8 @@
 import 'package:bukutextly_users/components/product_box.dart';
+import 'package:bukutextly_users/pages/cart_page.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
-import 'package:bukutextly_users/pages/shopping_page.dart';
+// import 'package:bukutextly_users/pages/shopping_page.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> listOfPages = [
     const HomePageContent(),
     const NotificationsPage(),
-    const ShoppingPage(),
+    // const ShoppingPage(),
     const ProfilePage(),
   ];
 
@@ -90,7 +91,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                       title: const Text('C A R T'),
                       onTap: () {
-                        Navigator.pushNamed(context, '/shoppingpage');
+                        final userId = FirebaseAuth.instance.currentUser?.uid;
+                        if (userId != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CartPage(userId: userId),
+                            ),
+                          );
+                        }
                       },
                     ),
                     ListTile(
@@ -176,10 +185,10 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.notifications_active,
                   text: "Notif",
                 ),
-                GButton(
-                  icon: Icons.shopping_cart,
-                  text: "Shop",
-                ),
+                // GButton(
+                //   icon: Icons.shopping_cart,
+                //   text: "Shop",
+                // ),
                 GButton(
                   icon: Icons.person,
                   text: "Profile",
@@ -284,13 +293,10 @@ class _HomePageContentState extends State<HomePageContent> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 0.5,
+                childAspectRatio: 0.6,
               ),
             );
           },
-        ),
-        const SliverToBoxAdapter(
-          child: SizedBox(height: 20),
         ),
       ],
     );

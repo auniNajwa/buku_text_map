@@ -1,14 +1,18 @@
 import 'package:bukutextly_users/pages/edit_product_page.dart';
+import 'package:bukutextly_users/utils/cart_model.dart';
+import 'package:bukutextly_users/utils/cart_service.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final String productId; // Add productId
+  final String productId;
+  final String userId; // Add userId
 
   const ProductDetailsPage({
     super.key,
-    required this.productId, // Add productId
+    required this.productId,
+    required this.userId, // Add userId
   });
 
   @override
@@ -16,13 +20,16 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  late Future<Product> _productFuture; // Add a Future to hold the product data
+  late Future<Product> _productFuture;
   final FirestoreService _firestoreService = FirestoreService();
+  late CartService _cartService;
 
   @override
   void initState() {
     super.initState();
-    _productFuture = _fetchProduct(widget.productId); // Fetch product data
+    _productFuture = _fetchProduct(widget.productId);
+    _cartService = CartService(
+        userId: widget.userId); // Initialize CartService with userId
   }
 
   Future<Product> _fetchProduct(String productId) async {
@@ -30,12 +37,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         .collection('products')
         .doc(productId)
         .get();
-    return Product.fromFirestore(doc); // Convert Firestore document to Product
+    return Product.fromFirestore(doc);
   }
 
   Future<void> _deleteProduct() async {
     await _firestoreService.deleteProduct(widget.productId);
-    Navigator.of(context).pop(); // Go back to the previous screen
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _addToCart(Product product) async {
+    final cartItem = CartItem(
+      id: product.id,
+      name: product.name,
+      imageUrl: product.imageUrl,
+      price: product.price,
+    );
+    await _cartService.addItemToCart(cartItem);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Product added to cart')),
+    );
   }
 
   @override
@@ -106,7 +126,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    '\$${product.price.toStringAsFixed(2)}',
+                    '\RM ${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(
                       fontSize: 20.0,
                       color: Colors.green,
@@ -171,6 +191,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     style: const TextStyle(
                       fontSize: 16.0,
                     ),
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: () => _addToCart(product),
+                    child: const Text('Add to Cart'),
                   ),
                 ],
               ),

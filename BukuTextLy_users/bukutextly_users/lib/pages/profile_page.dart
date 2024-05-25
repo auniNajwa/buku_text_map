@@ -21,6 +21,29 @@ class _ProfilePageState extends State<ProfilePage> {
   //rating value
   double ratingValue = 0;
 
+  final FirestoreService firestoreService = FirestoreService();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           height: 20,
                         ),
                         //profile picture
@@ -187,17 +210,26 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
 
                         //search bar
-                        const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: SearchBar(
-                            hintText: 'Search',
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: const InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                   StreamBuilder<List<Product>>(
-                    stream: FirestoreService().getProducts(),
+                    stream:
+                        firestoreService.getProducts(searchQuery: _searchQuery),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const SliverToBoxAdapter(
@@ -227,9 +259,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               productId: product.id,
                               productName: product.name,
                               productPrice:
-                                  '\$${product.price.toStringAsFixed(2)}',
+                                  '\RM ${product.price.toStringAsFixed(2)}',
                               productCondition: product.condition,
-                              imageUrl: product.imageUrl.toString(),
+                              imageUrl: product.imageUrl,
                             );
                           },
                           childCount: products.length,
@@ -239,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: 0.55,
+                          childAspectRatio: 0.6,
                         ),
                       );
                     },
