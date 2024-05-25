@@ -1,5 +1,6 @@
 import 'package:bukutextly_users/auth/main_page.dart';
 import 'package:bukutextly_users/firebase_options.dart';
+import 'package:bukutextly_users/pages/add_product_page.dart';
 import 'package:bukutextly_users/pages/chats_page.dart';
 import 'package:bukutextly_users/pages/edit_profile_page.dart';
 import 'package:bukutextly_users/pages/home_page.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         '/notifpage': (context) => const NotificationsPage(),
         '/settingspage': (context) => const SettingsPage(),
         '/chatspage': (context) => const ChatsPage(),
-        '/editprofilepage': (context) => const EditProfilePage()
+        '/editprofilepage': (context) => const EditProfilePage(),
+        '/addproductpage': (context) => AddProductPage(),
       },
     );
   }

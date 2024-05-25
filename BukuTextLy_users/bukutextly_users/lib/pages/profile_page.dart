@@ -1,9 +1,11 @@
 import 'package:bukutextly_users/components/features_box_widget.dart';
 import 'package:bukutextly_users/components/item_box.widget.dart';
+import 'package:bukutextly_users/components/product_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:bukutextly_users/utils/firestore_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,9 +18,6 @@ class _ProfilePageState extends State<ProfilePage> {
   //user
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  //all users
-  final usersCollection = FirebaseFirestore.instance.collection('Users');
-
   //rating value
   double ratingValue = 0;
 
@@ -27,24 +26,23 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(),
       backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Users')
-              .doc(currentUser.email)
-              .snapshots(),
-          builder: (context, snapshot) {
-            // Check for data
-            if (snapshot.hasData) {
-              // Ensure the data is not null
-              final data = snapshot.data!.data();
-              if (data != null) {
-                final userData = data as Map<String, dynamic>;
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUser.email)
+            .snapshots(),
+        builder: (context, snapshot) {
+          // Check for data
+          if (snapshot.hasData) {
+            // Ensure the data is not null
+            final data = snapshot.data!.data();
+            if (data != null) {
+              final userData = data as Map<String, dynamic>;
 
-                return Stack(
-                  children: [
-                    Column(
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
@@ -178,7 +176,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: FeaturesBoxWidget(
                                     icon: IconButton(
                                       onPressed: () {},
-                                      icon: const Icon(Icons.star_border_rounded),
+                                      icon:
+                                          const Icon(Icons.star_border_rounded),
                                     ),
                                   ),
                                 );
@@ -194,58 +193,75 @@ class _ProfilePageState extends State<ProfilePage> {
                             hintText: 'Search',
                           ),
                         ),
-
-                        //item listing
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 15.0,
-                            left: 20.0,
-                            right: 20.0,
-                            bottom: 15.0,
-                          ),
-                          child: SizedBox(
-                            height: 700, // Adjust the height as needed
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              itemCount: 10,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15,
-                              ),
-                              itemBuilder: (context, index) {
-                                return const ItemBoxWidget(
-                                  textInSquare: 'item description lorem ipsum',
-                                  iconData: Icons.favorite,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
                       ],
                     ),
-                  ],
-                );
-              } else {
-                // Handle the case where the data is null
-                return Center(
-                  child: Text('User data not found'),
-                );
-              }
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
+                  ),
+                  StreamBuilder<List<Product>>(
+                    stream: FirestoreService().getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
+                      if (snapshot.hasError) {
+                        return const SliverToBoxAdapter(
+                          child: Center(child: Text('Error loading products')),
+                        );
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const SliverToBoxAdapter(
+                          child: Center(child: Text('No products available')),
+                        );
+                      }
+
+                      final products = snapshot.data!;
+
+                      return SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final product = products[index];
+                            return ProductBox(
+                              productName: product.name,
+                              productPrice:
+                                  '\$${product.price.toStringAsFixed(2)}',
+                              productCondition: product.condition,
+                            );
+                          },
+                          childCount: products.length,
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.75,
+                        ),
+                      );
+                    },
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 20),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: Text('User data not found'),
               );
             }
-
-            return const Center(
-              child: CircularProgressIndicator(),
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
             );
-          },
-        ),
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

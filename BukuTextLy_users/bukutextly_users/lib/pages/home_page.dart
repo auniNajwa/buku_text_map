@@ -1,8 +1,10 @@
 import 'package:bukutextly_users/components/item_box.widget.dart';
+import 'package:bukutextly_users/components/product_box.dart';
 import 'package:bukutextly_users/components/product_card.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
 import 'package:bukutextly_users/pages/shopping_page.dart';
+import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -113,6 +115,16 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pushNamed(context, '/settingspage');
                       },
                     ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.add,
+                        color: Colors.black,
+                      ),
+                      title: const Text('ADD PRODUCT'),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/addproductpage');
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -184,45 +196,66 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageContent extends StatelessWidget {
+  final FirestoreService firestoreService = FirestoreService();
+
+  HomePageContent({super.key});
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Padding(
+    return CustomScrollView(
+      slivers: [
+        const SliverToBoxAdapter(
+          child: Padding(
             padding: EdgeInsets.all(10.0),
             child: SearchBar(
               hintText: 'Search',
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 15.0,
-              left: 10.0,
-              right: 10.0,
-              bottom: 10.0,
-            ),
-            child: SizedBox(
-              height: 700, // Adjust the height as needed
-              child: GridView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: 20,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 12,
-                  mainAxisExtent: 248,
-                ),
-                itemBuilder: (context, index) {
-                  return const ProductCard();
+        ),
+        StreamBuilder<List<Product>>(
+          stream: firestoreService.getProducts(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            if (snapshot.hasError) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Text('Error loading products')),
+              );
+            }
+
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Text('No products available')),
+              );
+            }
+
+            final products = snapshot.data!;
+
+            return SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final product = products[index];
+                  return ProductBox(
+                    productName: product.name,
+                    productPrice: '\$${product.price.toStringAsFixed(2)}',
+                    productCondition: product.condition,
+                  );
                 },
+                childCount: products.length,
               ),
-            ),
-          ),
-        ],
-      ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.75,
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
