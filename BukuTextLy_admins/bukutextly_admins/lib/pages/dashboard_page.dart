@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -9,6 +11,26 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  int totalProducts = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTotalProducts();
+  }
+
+  Future<void> fetchTotalProducts() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('products').get();
+      setState(() {
+        totalProducts = querySnapshot.docs.length;
+      });
+    } catch (e) {
+      print('Error fetching total products: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +94,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 1,
                           spreadRadius: 2,
-                          offset: const Offset(0, 2),
+                          offset: Offset(0, 2),
                         ),
                       ],
                     ),
@@ -89,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
                         Text(
-                          'RM99',
+                          'RM 99',
                           style: TextStyle(
                             fontFamily: 'Readex Pro',
                             fontSize: 18,
@@ -104,23 +126,23 @@ class _DashboardPageState extends State<DashboardPage> {
                     width: 150,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDBD0BD),
+                      color: Color(0xFFDBD0BD),
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 1,
                           spreadRadius: 2,
-                          offset: const Offset(0, 2),
+                          offset: Offset(0, 2),
                         ),
                       ],
                     ),
                     alignment: Alignment.center,
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'UNKNOWN',
+                          'TOTAL PRODUCT',
                           style: TextStyle(
                             fontFamily: 'Readex Pro',
                             fontSize: 20,
@@ -128,7 +150,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
                         Text(
-                          'unknown',
+                          '$totalProducts',
                           style: TextStyle(
                             fontFamily: 'Readex Pro',
                             fontSize: 18,
@@ -190,13 +212,13 @@ class _DashboardPageState extends State<DashboardPage> {
                         lineBarsData: [
                           LineChartBarData(
                             spots: [
-                              const FlSpot(0, 1),
+                              const FlSpot(0, 0),
                               const FlSpot(1, 3),
                               const FlSpot(2, 10),
                               const FlSpot(3, 7),
-                              const FlSpot(4, 12),
-                              const FlSpot(5, 13),
-                              const FlSpot(6, 17),
+                              const FlSpot(4, 2),
+                              const FlSpot(5, 9),
+                              const FlSpot(6, 10),
                             ],
                             isCurved: true,
                             colors: [Colors.white],
@@ -208,6 +230,50 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/userslistpage');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFA77D54),
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontFamily: 'Readex Pro',
+                        fontSize: 20,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      elevation: 3,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                      minimumSize: Size(250, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      side: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1,
+                      ),
+                    ),
+                    child: const Text('USERLIST'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(25, 0, 0, 0),
+                    child: Icon(
+                      Icons.group,
+                      color: Theme.of(context).textTheme.bodyMedium!.color,
+                      size: 50,
                     ),
                   ),
                 ],

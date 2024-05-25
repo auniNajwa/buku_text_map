@@ -1,7 +1,8 @@
-import 'package:bukutextly_admins/components/item_box_widget.dart';
+import 'package:bukutextly_admins/components/product_box.dart';
 import 'package:bukutextly_admins/pages/notif_page.dart';
 import 'package:bukutextly_admins/pages/profile_page.dart';
-import 'package:bukutextly_admins/pages/shopping_page.dart';
+//import 'package:bukutextly_admins/pages/shopping_page.dart';
+import 'package:bukutextly_admins/utils/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -17,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   final List<Widget> listOfPages = [
-    const HomePageContent(),
+    HomePageContent(),
     const NotificationsPage(),
-    const ShoppingPage(),
+    //const ShoppingPage(),
     const ProfilePage(),
   ];
 
@@ -87,26 +88,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ListTile(
                           leading: const Icon(
-                            Icons.trolley,
-                            color: Colors.black,
-                          ),
-                          title: const Text('C A R T'),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/shoppingpage');
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(
-                            Icons.shopping_bag_sharp,
-                            color: Colors.black,
-                          ),
-                          title: const Text('M A R K E T'),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/shoppingpage');
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(
                             Icons.settings,
                             color: Colors.black,
                           ),
@@ -121,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ListTile(
                           leading: const Icon(
-                            Icons.settings,
+                            Icons.admin_panel_settings,
                             color: Colors.black,
                           ),
                           title: const Text('D A S H B O A R D'),
@@ -131,10 +112,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ListTile(
                           leading: const Icon(
-                            Icons.settings,
+                            Icons.group,
                             color: Colors.black,
                           ),
-                          title: const Text('U S E R S L I S T'),
+                          title: const Text('U S E R L I S T'),
                           onTap: () {
                             Navigator.pushNamed(context, '/userslistpage');
                           },
@@ -156,7 +137,12 @@ class _HomePageState extends State<HomePage> {
                             'Log Out',
                           ),
                           onTap: () {
-                            FirebaseAuth.instance.signOut();
+                            print('Logging out...');
+                            FirebaseAuth.instance.signOut().then((value) {
+                              print('User signed out successfully');
+                            }).catchError((error) {
+                              print('Error signing out: $error');
+                            });
                           },
                         ),
                       ],
@@ -199,10 +185,10 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.notifications_active,
                   text: "Notif",
                 ),
-                GButton(
-                  icon: Icons.shopping_cart,
-                  text: "Shop",
-                ),
+                //GButton(
+                //  icon: Icons.shopping_cart,
+                //  text: "Shop",
+                //),
                 GButton(
                   icon: Icons.person,
                   text: "Profile",
@@ -217,45 +203,66 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageContent extends StatelessWidget {
-  const HomePageContent({super.key});
+  final FirestoreService firestoreService = FirestoreService();
 
+  HomePageContent({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: SearchBar(
-            hintText: 'Search',
+    return CustomScrollView(
+      slivers: [
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: SearchBar(
+              hintText: 'Search',
+            ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 15.0,
-              left: 10.0,
-              right: 10.0,
-              bottom: 10.0,
-            ),
-            child: SizedBox(
-              height: 700, // Adjust the height as needed
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: 30,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return const ItemBoxWidget(
-                    textInSquare: 'item description lorem ipsum',
-                    iconData: Icons.favorite,
+        StreamBuilder<List<Product>>(
+          stream: firestoreService.getProducts(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            if (snapshot.hasError) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Text('Error loading products')),
+              );
+            }
+
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Text('No products available')),
+              );
+            }
+
+            final products = snapshot.data!;
+
+            return SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final product = products[index];
+                  return ProductBox(
+                    productId: product.id,
+                    productName: product.name,
+                    productPrice: '\RM ${product.price.toStringAsFixed(2)}',
+                    productCondition: product.condition,
+                    imageUrl: product.imageUrl,
                   );
                 },
+                childCount: products.length,
               ),
-            ),
-          ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.6,
+              ),
+            );
+          },
         ),
       ],
     );
