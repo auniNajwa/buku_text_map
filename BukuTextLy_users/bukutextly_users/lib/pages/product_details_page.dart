@@ -1,3 +1,4 @@
+import 'package:bukutextly_users/pages/edit_product_page.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late Future<Product> _productFuture; // Add a Future to hold the product data
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -31,11 +33,41 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return Product.fromFirestore(doc); // Convert Firestore document to Product
   }
 
+  Future<void> _deleteProduct() async {
+    await _firestoreService.deleteProduct(widget.productId);
+    Navigator.of(context).pop(); // Go back to the previous screen
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Details'),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) async {
+              if (value == 'edit') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        EditProductPage(productId: widget.productId),
+                  ),
+                );
+              } else if (value == 'delete') {
+                await _deleteProduct();
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'edit', 'delete'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice[0].toUpperCase() + choice.substring(1)),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<Product>(
         future: _productFuture,
