@@ -239,7 +239,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: 0.75,
+                          childAspectRatio: 0.55,
                         ),
                       );
                     },

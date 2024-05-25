@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   final List<Widget> listOfPages = [
-    HomePageContent(),
+    const HomePageContent(),
     const NotificationsPage(),
     const ShoppingPage(),
     const ProfilePage(),
@@ -193,24 +193,58 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomePageContent extends StatelessWidget {
-  final FirestoreService firestoreService = FirestoreService();
+class HomePageContent extends StatefulWidget {
+  const HomePageContent({super.key});
 
-  HomePageContent({super.key});
+  @override
+  State<HomePageContent> createState() => _HomePageContentState();
+}
+
+class _HomePageContentState extends State<HomePageContent> {
+  final FirestoreService firestoreService = FirestoreService();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: SearchBar(
-              hintText: 'Search',
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+              ),
             ),
           ),
         ),
         StreamBuilder<List<Product>>(
-          stream: FirestoreService().getProducts(),
+          stream: firestoreService.getProducts(searchQuery: _searchQuery),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SliverToBoxAdapter(
@@ -239,7 +273,7 @@ class HomePageContent extends StatelessWidget {
                   return ProductBox(
                     productId: product.id,
                     productName: product.name,
-                    productPrice: '\$${product.price.toStringAsFixed(2)}',
+                    productPrice: '\RM ${product.price.toStringAsFixed(2)}',
                     productCondition: product.condition,
                     imageUrl: product.imageUrl,
                   );
@@ -250,10 +284,13 @@ class HomePageContent extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 0.75,
+                childAspectRatio: 0.5,
               ),
             );
           },
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 20),
         ),
       ],
     );

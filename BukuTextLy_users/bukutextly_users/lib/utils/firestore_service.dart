@@ -64,8 +64,24 @@ class FirestoreService {
     }
   }
 
-  Stream<List<Product>> getProducts() {
-    return _db.collection('products').snapshots().map((snapshot) {
+  // Stream<List<Product>> getProducts() {
+  //   return _db.collection('products').snapshots().map((snapshot) {
+  //     return snapshot.docs.map((doc) {
+  //       return Product.fromFirestore(doc);
+  //     }).toList();
+  //   });
+  // }
+
+  Stream<List<Product>> getProducts({String searchQuery = ''}) {
+    Query query = _db.collection('products');
+
+    if (searchQuery.isNotEmpty) {
+      query = query
+          .where('name', isGreaterThanOrEqualTo: searchQuery)
+          .where('name', isLessThanOrEqualTo: '$searchQuery\uf8ff');
+    }
+
+    return query.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Product.fromFirestore(doc);
       }).toList();

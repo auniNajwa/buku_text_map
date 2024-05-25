@@ -42,7 +42,7 @@ class ProductBox extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                height: 100,
+                height: 150,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF95E5E),
                   borderRadius: BorderRadius.circular(20),
@@ -54,7 +54,7 @@ class ProductBox extends StatelessWidget {
                       : null,
                 ),
                 child: imageUrl.isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Icon(Icons.image, size: 40, color: Colors.white))
                     : null,
               ),
@@ -86,8 +86,8 @@ class ProductBox extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       productPrice,
@@ -99,9 +99,9 @@ class ProductBox extends StatelessWidget {
                     Text(
                       productCondition,
                       style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        letterSpacing: 0,
-                      ),
+                          fontFamily: 'Manrope',
+                          letterSpacing: 0,
+                          color: Colors.black54),
                     ),
                   ],
                 ),
