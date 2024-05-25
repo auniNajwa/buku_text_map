@@ -1,3 +1,4 @@
+import 'package:bukutextly_users/components/product_card.dart';
 import 'package:flutter/material.dart';
 
 class ShoppingPage extends StatefulWidget {
@@ -13,9 +14,15 @@ class _ShoppingPageState extends State<ShoppingPage> {
     return Scaffold(
       appBar: AppBar(),
       body: const Center(
-        child: Text(
-          'Shopping Page',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          children: [
+            Text(
+              'Shopping Page',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            ProductCard(),
+          ],
         ),
       ),
     );

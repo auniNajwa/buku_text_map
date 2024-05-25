@@ -1,4 +1,5 @@
 import 'package:bukutextly_users/components/item_box.widget.dart';
+import 'package:bukutextly_users/components/product_card.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
 import 'package:bukutextly_users/pages/shopping_page.dart';
@@ -185,16 +186,16 @@ class _HomePageState extends State<HomePage> {
 class HomePageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: SearchBar(
-            hintText: 'Search',
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: SearchBar(
+              hintText: 'Search',
+            ),
           ),
-        ),
-        Expanded(
-          child: Padding(
+          Padding(
             padding: const EdgeInsets.only(
               top: 15.0,
               left: 10.0,
@@ -204,24 +205,24 @@ class HomePageContent extends StatelessWidget {
             child: SizedBox(
               height: 700, // Adjust the height as needed
               child: GridView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                itemCount: 30,
+                itemCount: 20,
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  mainAxisSpacing: 12,
+                  mainAxisExtent: 248,
                 ),
                 itemBuilder: (context, index) {
-                  return const ItemBoxWidget(
-                    textInSquare: 'item description lorem ipsum',
-                    iconData: Icons.favorite,
-                  );
+                  return const ProductCard();
                 },
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
