@@ -17,6 +17,7 @@ class FirestoreService {
     required String condition,
     required double price,
     required BookCategory category,
+    required String imageUrl,
   }) async {
     try {
       await _db.collection('products').add({
@@ -25,6 +26,7 @@ class FirestoreService {
         'condition': condition,
         'price': price,
         'category': category.toString().split('.').last,
+        'image': imageUrl,
         'timestamp': FieldValue.serverTimestamp(), // To add a timestamp
       });
     } catch (e) {
@@ -78,6 +80,7 @@ class Product {
   final String condition;
   final double price;
   final BookCategory category;
+  final String imageUrl; // Add imageUrl
 
   Product({
     required this.id,
@@ -86,6 +89,7 @@ class Product {
     required this.condition,
     required this.price,
     required this.category,
+    required this.imageUrl, // Add imageUrl
   });
 
   factory Product.fromFirestore(DocumentSnapshot doc) {
@@ -98,6 +102,7 @@ class Product {
       price: (data['price'] as num).toDouble() ?? 0.0,
       category: BookCategory.values.firstWhere(
           (e) => e.toString() == 'BookCategory.${data['category']}'),
+      imageUrl: data['image'] ?? '', // Add imageUrl
     );
   }
 }

@@ -4,12 +4,14 @@ class ProductBox extends StatelessWidget {
   final String productName;
   final String productPrice;
   final String productCondition;
+  final String imageUrl; // Add imageUrl
 
   const ProductBox({
     super.key,
     required this.productName,
     required this.productPrice,
     required this.productCondition,
+    required this.imageUrl, // Add imageUrl
   });
 
   @override
@@ -30,7 +32,18 @@ class ProductBox extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFFF95E5E),
                 borderRadius: BorderRadius.circular(20),
+                image: imageUrl
+                        .isNotEmpty // Add image decoration if imageUrl is not empty
+                    ? DecorationImage(
+                        image: NetworkImage(imageUrl),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
+              child: imageUrl.isEmpty // Show placeholder if no imageUrl
+                  ? Center(
+                      child: Icon(Icons.image, size: 40, color: Colors.white))
+                  : null,
             ),
             const SizedBox(height: 10),
             Row(

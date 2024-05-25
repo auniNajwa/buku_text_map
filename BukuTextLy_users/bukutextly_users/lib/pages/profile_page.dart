@@ -228,6 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               productPrice:
                                   '\$${product.price.toStringAsFixed(2)}',
                               productCondition: product.condition,
+                              imageUrl: product.imageUrl.toString(),
                             );
                           },
                           childCount: products.length,

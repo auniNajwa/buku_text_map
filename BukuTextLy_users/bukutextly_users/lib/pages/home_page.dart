@@ -210,7 +210,7 @@ class HomePageContent extends StatelessWidget {
           ),
         ),
         StreamBuilder<List<Product>>(
-          stream: firestoreService.getProducts(),
+          stream: FirestoreService().getProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SliverToBoxAdapter(
@@ -240,6 +240,7 @@ class HomePageContent extends StatelessWidget {
                     productName: product.name,
                     productPrice: '\$${product.price.toStringAsFixed(2)}',
                     productCondition: product.condition,
+                    imageUrl: product.imageUrl, // Use imageUrl
                   );
                 },
                 childCount: products.length,
@@ -252,7 +253,7 @@ class HomePageContent extends StatelessWidget {
               ),
             );
           },
-        ),
+        )
       ],
     );
   }

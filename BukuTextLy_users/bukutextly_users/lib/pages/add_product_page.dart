@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:bukutextly_users/utils/firestore_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -17,6 +21,8 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController priceController = TextEditingController();
 
   BookCategory selectedCategory = BookCategory.computerscience; // Default value
+
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +67,56 @@ class _AddProductPageState extends State<AddProductPage> {
                 );
               }).toList(),
             ),
+            IconButton(
+              onPressed: () async {
+                //nak pick image
+                ImagePicker imagePicker = ImagePicker();
+                XFile? file =
+                    await imagePicker.pickImage(source: ImageSource.gallery);
+                print('${file?.path}');
+
+                if (file == null) return;
+
+                //nama unique
+                String uniqueFileName =
+                    DateTime.now().millisecondsSinceEpoch.toString();
+
+                //upload to firebase storage untuk simpan gamba
+
+                //get a reference storage root
+                Reference referenceRoot = FirebaseStorage.instance.ref();
+                Reference referenceDirImages = referenceRoot.child('images');
+
+                //create a new reference for the image to be stored
+                Reference referenceImageToUpload =
+                    referenceDirImages.child(uniqueFileName);
+
+                //Handle error/success
+                try {
+                  //Store File/image
+                  await referenceImageToUpload.putFile(File(file!.path));
+
+                  //Success : get download url
+                  imageUrl = await referenceImageToUpload.getDownloadURL();
+                } catch (e) {
+                  //error : get download url
+                }
+              },
+              icon: const Icon(Icons.camera_alt_rounded),
+            ),
             ElevatedButton(
               onPressed: () {
                 final String name = nameController.text;
                 final String description = descriptionController.text;
                 final String condition = conditionController.text;
                 final double price = double.parse(priceController.text);
+
+                if (imageUrl.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please upload an image")));
+
+                  return;
+                }
 
                 firestoreService
                     .addProduct(
@@ -75,6 +125,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   condition: condition,
                   price: price,
                   category: selectedCategory,
+                  imageUrl: imageUrl,
                 )
                     .then((_) {
                   ScaffoldMessenger.of(context).showSnackBar(
