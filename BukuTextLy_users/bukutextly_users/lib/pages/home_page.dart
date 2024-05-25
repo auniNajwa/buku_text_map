@@ -147,7 +147,12 @@ class _HomePageState extends State<HomePage> {
                   'Log Out',
                 ),
                 onTap: () {
-                  FirebaseAuth.instance.signOut();
+                  print('Logging out...');
+                  FirebaseAuth.instance.signOut().then((value) {
+                    print('User signed out successfully');
+                  }).catchError((error) {
+                    print('Error signing out: $error');
+                  });
                 },
               ),
             ],
