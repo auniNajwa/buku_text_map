@@ -1,6 +1,4 @@
-import 'package:bukutextly_users/components/item_box.widget.dart';
 import 'package:bukutextly_users/components/product_box.dart';
-import 'package:bukutextly_users/components/product_card.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
 import 'package:bukutextly_users/pages/shopping_page.dart';
