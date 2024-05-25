@@ -14,14 +14,14 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushNamed(context, '/homepage');
           },
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -29,18 +29,18 @@ class _DashboardPageState extends State<DashboardPage> {
               width: 420,
               height: 100,
               decoration: BoxDecoration(
-                color: Color(0xFF885A3A),
+                color: const Color(0xFF885A3A),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
                     blurRadius: 1,
                     spreadRadius: 2,
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: Align(
+              child: const Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 10, bottom: 10),
@@ -56,102 +56,104 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 205,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFC9B09A),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 1,
-                        spreadRadius: 2,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'TOTAL SALES',
-                        style: TextStyle(
-                          fontFamily: 'Readex Pro',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+            const SizedBox(height: 10),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: 150,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFC9B09A),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 1,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 2),
                         ),
-                      ),
-                      Text(
-                        'RM99',
-                        style: TextStyle(
-                          fontFamily: 'Readex Pro',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'TOTAL SALES',
+                          style: TextStyle(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 10),
-                Container(
-                  width: 205,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFDBD0BD),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 1,
-                        spreadRadius: 2,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'UNKNOWN',
-                        style: TextStyle(
-                          fontFamily: 'Readex Pro',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          'RM99',
+                          style: TextStyle(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'unknown',
-                        style: TextStyle(
-                          fontFamily: 'Readex Pro',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 150,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDBD0BD),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 1,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'UNKNOWN',
+                          style: TextStyle(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          'unknown',
+                          style: TextStyle(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               width: 420,
               height: 350,
               decoration: BoxDecoration(
-                color: Color(0xFFA77D54),
+                color: const Color(0xFFA77D54),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
                     blurRadius: 1,
                     spreadRadius: 2,
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
@@ -159,7 +161,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 10, top: 5),
@@ -174,7 +176,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: 390,
                     height: 280,
                     child: LineChart(
@@ -188,20 +190,20 @@ class _DashboardPageState extends State<DashboardPage> {
                         lineBarsData: [
                           LineChartBarData(
                             spots: [
-                              FlSpot(0, 1),
-                              FlSpot(1, 3),
-                              FlSpot(2, 10),
-                              FlSpot(3, 7),
-                              FlSpot(4, 12),
-                              FlSpot(5, 13),
-                              FlSpot(6, 17),
+                              const FlSpot(0, 1),
+                              const FlSpot(1, 3),
+                              const FlSpot(2, 10),
+                              const FlSpot(3, 7),
+                              const FlSpot(4, 12),
+                              const FlSpot(5, 13),
+                              const FlSpot(6, 17),
                             ],
                             isCurved: true,
                             colors: [Colors.white],
                             barWidth: 2,
                             belowBarData: BarAreaData(
                               show: true,
-                              colors: [Color(0xFFC9B09A)],
+                              colors: [const Color(0xFFC9B09A)],
                             ),
                           ),
                         ],

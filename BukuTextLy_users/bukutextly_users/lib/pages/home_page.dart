@@ -237,10 +237,11 @@ class HomePageContent extends StatelessWidget {
                 (context, index) {
                   final product = products[index];
                   return ProductBox(
+                    productId: product.id,
                     productName: product.name,
                     productPrice: '\$${product.price.toStringAsFixed(2)}',
                     productCondition: product.condition,
-                    imageUrl: product.imageUrl, // Use imageUrl
+                    imageUrl: product.imageUrl,
                   );
                 },
                 childCount: products.length,
@@ -253,7 +254,7 @@ class HomePageContent extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

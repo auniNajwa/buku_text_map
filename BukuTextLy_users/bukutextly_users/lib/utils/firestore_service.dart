@@ -71,6 +71,11 @@ class FirestoreService {
       }).toList();
     });
   }
+
+  Future<Product> getProductById(String productId) async {
+    final doc = await _db.collection('products').doc(productId).get();
+    return Product.fromFirestore(doc);
+  }
 }
 
 class Product {

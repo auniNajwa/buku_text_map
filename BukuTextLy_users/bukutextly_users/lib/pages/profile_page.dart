@@ -224,6 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           (context, index) {
                             final product = products[index];
                             return ProductBox(
+                              productId: product.id,
                               productName: product.name,
                               productPrice:
                                   '\$${product.price.toStringAsFixed(2)}',

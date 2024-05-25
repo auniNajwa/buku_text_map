@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/settingspage': (context) => const SettingsPage(),
         '/chatspage': (context) => const ChatsPage(),
         '/editprofilepage': (context) => const EditProfilePage(),
-        '/addproductpage': (context) => AddProductPage(),
+        '/addproductpage': (context) => const AddProductPage(),
       },
     );
   }
