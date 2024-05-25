@@ -102,16 +102,16 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.shopping_bag_sharp,
-                        color: Colors.black,
-                      ),
-                      title: const Text('M A R K E T'),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/shoppingpage');
-                      },
-                    ),
+                    // ListTile(
+                    //   leading: const Icon(
+                    //     Icons.shopping_bag_sharp,
+                    //     color: Colors.black,
+                    //   ),
+                    //   title: const Text('M A R K E T'),
+                    //   onTap: () {
+                    //     Navigator.pushNamed(context, '/shoppingpage');
+                    //   },
+                    // ),
                     ListTile(
                       leading: const Icon(
                         Icons.settings,
