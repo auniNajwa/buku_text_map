@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -57,8 +56,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child:Image.asset(
-                        'assets/logos/Feedback-cuate.png', // Replace with your image URL or asset
+                    child: Image.asset(
+                      'assets/logos/Feedback-cuate.png', // Replace with your image URL or asset
                       width: 150,
                       height: 150,
                     ),
