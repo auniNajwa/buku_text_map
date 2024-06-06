@@ -1,3 +1,4 @@
+import 'package:bukutextly_users/pages/feedback_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,6 +46,30 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Dummy review data
+    final List<Map<String, dynamic>> reviews = [
+      {
+        'username': 'John Doe',
+        'rating': 4,
+        'comment': 'Great product, really enjoyed using it!'
+      },
+      {
+        'username': 'Jane Smith',
+        'rating': 5,
+        'comment': 'Absolutely fantastic! Exceeded my expectations.'
+      },
+      {
+        'username': 'Alex Johnson',
+        'rating': 3,
+        'comment': 'It was okay, had some issues but overall not bad.'
+      },
+      {
+        'username': 'Emily Brown',
+        'rating': 4,
+        'comment': 'Very good, would recommend to others.'
+      },
+    ];
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -316,20 +341,100 @@ class _ProfilePageState extends State<ProfilePage> {
                             );
                           },
                         ),
+
                         // Reviews Tab
                         Container(
                           color: Colors.white,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
+                          child: Stack(
                             children: [
-                              Align(
-                                alignment: AlignmentDirectional(-1, 0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 10, 0, 0),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional(-1, 0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          15, 15, 0, 0),
+                                      child: Text(
+                                        "Your Reviews", // Add your reviews content here
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(10),
+                                      itemCount: reviews.length,
+                                      itemBuilder: (context, index) {
+                                        final review = reviews[index];
+                                        return Card(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 5),
+                                          child: ListTile(
+                                            title: Text(
+                                              review['username'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: List.generate(
+                                                    review['rating'],
+                                                    (index) => Icon(
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(review['comment']),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FeedbackPage(),
+                                      ),
+                                    );
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                        color: Colors.grey), // Border color
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Rounded corners
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            12), // Padding inside the button
+                                  ),
+                                  child: Text(
+                                    'Write a Review',
+                                    style: TextStyle(
+                                      color: Colors.teal, // Text color
+                                      fontSize: 16, // Font size
+                                    ),
+                                  ),
                                 ),
                               ),
-                              // Add your reviews content here
                             ],
                           ),
                         ),

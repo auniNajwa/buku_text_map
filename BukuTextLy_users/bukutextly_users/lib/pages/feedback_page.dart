@@ -57,7 +57,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 children: [
                   Center(
                     child: Image.asset(
-                      'assets/logos/Feedback-cuate.png', // Replace with your image URL or asset
+                      'assets/images/Feedback-cuate.png', // Replace with your image URL or asset
                       width: 150,
                       height: 150,
                     ),
