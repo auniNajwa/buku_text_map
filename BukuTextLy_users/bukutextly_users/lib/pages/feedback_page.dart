@@ -1,3 +1,4 @@
+import 'package:bukutextly_users/components/my_button.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,7 +11,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Feedback Page',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor:const Color(0xFF885A3A)
+        //primarySwatch: Colors.blue,
       ),
       home: FeedbackPage(),
     );
@@ -58,8 +60,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   Center(
                     child: Image.asset(
                       'assets/images/Feedback-cuate.png', // Replace with your image URL or asset
-                      width: 150,
-                      height: 150,
+                      width: 350,
+                      height: 350,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -75,7 +77,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       });
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   Text(
                     'Your Comment',
                     style: TextStyle(fontSize: 16),
@@ -98,9 +100,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   ),
                   SizedBox(height: 20),
                   Center(
-                    child: ElevatedButton(
-                      onPressed: _submitFeedback,
-                      child: Text('Submit'),
+                    child: MyButton(
+                      onTap: _submitFeedback,
+                      textInButton: "Submit",
                     ),
                   ),
                 ],
@@ -133,6 +135,7 @@ class StarRating extends StatelessWidget {
           icon: Icon(
             index < rating ? Icons.star : Icons.star_border,
             color: Colors.amber,
+            size: 40.0, // Set the size of the star icon
           ),
           onPressed: () {
             onRatingChanged(index + 1.0);
@@ -142,3 +145,4 @@ class StarRating extends StatelessWidget {
     );
   }
 }
+
