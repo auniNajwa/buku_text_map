@@ -221,11 +221,11 @@ class _DashboardPageState extends State<DashboardPage> {
                               const FlSpot(6, 10),
                             ],
                             isCurved: true,
-                            colors: [Colors.white],
+                            color: Colors.white,
                             barWidth: 2,
                             belowBarData: BarAreaData(
                               show: true,
-                              colors: [const Color(0xFFC9B09A)],
+                              color: const Color(0xFFC9B09A),
                             ),
                           ),
                         ],

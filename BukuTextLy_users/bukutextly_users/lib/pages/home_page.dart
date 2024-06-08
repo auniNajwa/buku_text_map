@@ -4,6 +4,7 @@ import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
 // import 'package:bukutextly_users/pages/shopping_page.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
+import 'package:bukutextly_users/utils/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';

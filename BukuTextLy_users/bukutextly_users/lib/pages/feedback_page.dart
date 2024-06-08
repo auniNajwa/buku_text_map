@@ -1,25 +1,32 @@
 import 'package:bukutextly_users/components/my_button.dart';
+import 'package:bukutextly_users/utils/feedback_model.dart';
+import 'package:bukutextly_users/utils/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Feedback Page',
-      theme: ThemeData(
-        primaryColor:const Color(0xFF885A3A)
-        //primarySwatch: Colors.blue,
-      ),
-      home: FeedbackPage(),
+      theme: ThemeData(primaryColor: const Color(0xFF885A3A)
+          //primarySwatch: Colors.blue,
+          ),
+      home: const FeedbackPage(),
     );
   }
 }
 
 class FeedbackPage extends StatefulWidget {
+  const FeedbackPage({super.key});
+
   @override
   _FeedbackPageState createState() => _FeedbackPageState();
 }
@@ -32,11 +39,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
   void _submitFeedback() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Print the feedback to the console (or process it as needed)
-      print('Rating: $_rating');
-      print('Comment: $_comment');
+      final feedback = FeedbackModel(
+        id: const Uuid().v4(),
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        rating: _rating,
+        comment: _comment,
+        timestamp: DateTime.now(),
+      );
+      FirestoreService().addFeedback(feedback);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Feedback Submitted!')),
+        const SnackBar(content: Text('Feedback Submitted!')),
       );
     }
   }
@@ -45,7 +57,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Page'),
+        title: const Text('Feedback Page'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -64,8 +76,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       height: 350,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Please Rate Me',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -77,14 +89,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       });
                     },
                   ),
-                  SizedBox(height: 30),
-                  Text(
+                  const SizedBox(height: 30),
+                  const Text(
                     'Your Comment',
                     style: TextStyle(fontSize: 16),
                   ),
                   TextFormField(
                     maxLines: isMobile ? 3 : 5,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your comment here',
                     ),
@@ -98,7 +110,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       _comment = value!;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Center(
                     child: MyButton(
                       onTap: _submitFeedback,
@@ -120,7 +132,8 @@ class StarRating extends StatelessWidget {
   final double rating;
   final void Function(double) onRatingChanged;
 
-  StarRating({
+  const StarRating({
+    super.key,
     this.starCount = 5,
     this.rating = 0,
     required this.onRatingChanged,
@@ -145,4 +158,3 @@ class StarRating extends StatelessWidget {
     );
   }
 }
-

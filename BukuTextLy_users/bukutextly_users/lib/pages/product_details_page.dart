@@ -2,6 +2,7 @@ import 'package:bukutextly_users/pages/edit_product_page.dart';
 import 'package:bukutextly_users/utils/cart_model.dart';
 import 'package:bukutextly_users/utils/cart_service.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
+import 'package:bukutextly_users/utils/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
