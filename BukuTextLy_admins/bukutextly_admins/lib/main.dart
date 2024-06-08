@@ -7,6 +7,7 @@ import 'package:bukutextly_admins/pages/edit_profile_page.dart';
 import 'package:bukutextly_admins/pages/home_page.dart';
 import 'package:bukutextly_admins/pages/notif_page.dart';
 import 'package:bukutextly_admins/pages/profile_page.dart';
+import 'package:bukutextly_admins/pages/reports_page.dart';
 import 'package:bukutextly_admins/pages/settings_page.dart';
 import 'package:bukutextly_admins/pages/shopping_page.dart';
 import 'package:bukutextly_admins/pages/users_list_page.dart';
@@ -39,7 +40,36 @@ class MyApp extends StatelessWidget {
         '/editprofilepage': (context) => const EditProfilePage(),
         '/userslistpage': (context) => const UsersListPage(),
         '/dashboardpage': (context) => const DashboardPage(),
+        //'/reports': (context) => const ReportsPage(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/reports') {
+          final args = settings.arguments as ReportsPageArguments;
+          return MaterialPageRoute(
+            builder: (context) {
+              return ReportsPage(
+                adminUsername: args.adminUsername,
+                date: args.date,
+                totalListings: args.totalListings,
+              );
+            },
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
       },
     );
   }
+}
+
+class ReportsPageArguments {
+  final String adminUsername;
+  final String date;
+  final int totalListings;
+
+  ReportsPageArguments({
+    required this.adminUsername,
+    required this.date,
+    required this.totalListings,
+  });
 }

@@ -10,9 +10,9 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const Center(
+    return const Scaffold(
+      //appBar: AppBar(),
+      body: Center(
         child: Text(
           'Notifications Page',
           style: TextStyle(fontSize: 24),
