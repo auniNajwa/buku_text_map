@@ -1,5 +1,3 @@
-// lib/utils/feedback_model.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FeedbackModel {
@@ -17,26 +15,7 @@ class FeedbackModel {
     required this.timestamp,
   });
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'id': id,
-  //     'userId': userId,
-  //     'rating': rating,
-  //     'comment': comment,
-  //     'timestamp': timestamp.toIso8601String(),
-  //   };
-  // }
-
-  // static FeedbackModel fromMap(Map<String, dynamic> map) {
-  //   return FeedbackModel(
-  //     id: map['id'] as String,
-  //     userId: map['userId'] as String,
-  //     rating: map['rating'] as double,
-  //     comment: map['comment'] as String,
-  //     timestamp: DateTime.parse(map['timestamp'] as String),
-  //   );
-  // }
-
+  // Factory constructor to create a FeedbackModel from Firestore data
   factory FeedbackModel.fromFirestore(Map<String, dynamic> data) {
     return FeedbackModel(
       id: data['id'] as String,
@@ -47,13 +26,15 @@ class FeedbackModel {
     );
   }
 
+  // Method to convert a FeedbackModel to a Firestore-compatible map
   Map<String, dynamic> toFirestore() {
     return {
       'id': id,
       'userId': userId,
       'rating': rating,
       'comment': comment,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp':
+          Timestamp.fromDate(timestamp), // Convert DateTime to Timestamp
     };
   }
 }

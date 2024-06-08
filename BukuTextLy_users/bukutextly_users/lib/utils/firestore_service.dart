@@ -1,5 +1,3 @@
-// lib/utils/firestore_service.dart
-
 import 'package:bukutextly_users/utils/feedback_model.dart';
 import 'package:bukutextly_users/utils/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,7 +29,7 @@ class FirestoreService {
         'price': price,
         'category': category.toString().split('.').last,
         'image': imageUrl,
-        'timestamp': FieldValue.serverTimestamp(),
+        'timestamp': FieldValue.serverTimestamp(), // To add a timestamp
       });
     } catch (e) {
       print('Error adding product: $e');
@@ -53,7 +51,7 @@ class FirestoreService {
         'condition': condition,
         'price': price,
         'category': category.toString().split('.').last,
-        'timestamp': FieldValue.serverTimestamp(),
+        'timestamp': FieldValue.serverTimestamp(), // Update the timestamp
       });
     } catch (e) {
       print('Error updating product: $e');
@@ -106,7 +104,7 @@ class FirestoreService {
         .where('userId', isEqualTo: userId)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => FeedbackModel.fromFirestore(doc.data()))
+            .map((doc) => FeedbackModel.fromFirestore(doc.data()!))
             .toList());
   }
 }
