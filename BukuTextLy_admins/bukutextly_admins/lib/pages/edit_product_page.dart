@@ -1,3 +1,4 @@
+import 'package:bukutextly_admins/utils/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bukutextly_admins/utils/firestore_service.dart';
 

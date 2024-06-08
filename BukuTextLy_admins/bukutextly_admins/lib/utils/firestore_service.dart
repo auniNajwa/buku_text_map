@@ -1,3 +1,5 @@
+import 'package:bukutextly_admins/utils/feedback_model.dart';
+import 'package:bukutextly_admins/utils/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum BookCategory {
@@ -64,14 +66,6 @@ class FirestoreService {
     }
   }
 
-  // Stream<List<Product>> getProducts() {
-  //   return _db.collection('products').snapshots().map((snapshot) {
-  //     return snapshot.docs.map((doc) {
-  //       return Product.fromFirestore(doc);
-  //     }).toList();
-  //   });
-  // }
-
   Stream<List<Product>> getProducts({String searchQuery = ''}) {
     Query query = _db.collection('products');
 
@@ -92,38 +86,44 @@ class FirestoreService {
     final doc = await _db.collection('products').doc(productId).get();
     return Product.fromFirestore(doc);
   }
-}
 
-class Product {
-  final String id;
-  final String name;
-  final String description;
-  final String condition;
-  final double price;
-  final BookCategory category;
-  final String imageUrl; // Add imageUrl
+  Future<void> addFeedback(FeedbackModel feedback) async {
+    try {
+      await _db
+          .collection('feedbacks')
+          .doc(feedback.id)
+          .set(feedback.toFirestore());
+    } catch (e) {
+      print('Error adding feedback: $e');
+    }
+  }
 
-  Product({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.condition,
-    required this.price,
-    required this.category,
-    required this.imageUrl, // Add imageUrl
-  });
+  Future<void> updateFeedback(FeedbackModel feedback) async {
+    try {
+      await _db
+          .collection('feedbacks')
+          .doc(feedback.id)
+          .update(feedback.toFirestore());
+    } catch (e) {
+      print('Error updating feedback: $e');
+    }
+  }
 
-  factory Product.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data() as Map;
-    return Product(
-      id: doc.id,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      condition: data['condition'] ?? '',
-      price: (data['price'] as num).toDouble() ?? 0.0,
-      category: BookCategory.values.firstWhere(
-          (e) => e.toString() == 'BookCategory.${data['category']}'),
-      imageUrl: data['image'] ?? '', // Add imageUrl
-    );
+  Future<void> deleteFeedback(String feedbackId) async {
+    try {
+      await _db.collection('feedbacks').doc(feedbackId).delete();
+    } catch (e) {
+      print('Error deleting feedback: $e');
+    }
+  }
+
+  Stream<List<FeedbackModel>> getUserFeedbacks(String userId) {
+    return _db
+        .collection('feedbacks')
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => FeedbackModel.fromFirestore(doc.data()!))
+            .toList());
   }
 }

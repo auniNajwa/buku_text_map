@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:bukutextly_users/components/features_box_widget.dart';
 import 'package:bukutextly_users/components/product_box.dart';
-import 'feedback_page.dart';
+import 'package:bukutextly_users/pages/feedback_page.dart';
 import 'package:bukutextly_users/utils/feedback_model.dart';
 import 'package:bukutextly_users/utils/product_model.dart';
 
@@ -40,6 +40,72 @@ class _ProfilePageState extends State<ProfilePage> {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _showEditFeedbackDialog(FeedbackModel feedback) {
+    final TextEditingController commentController =
+        TextEditingController(text: feedback.comment);
+    double newRating = feedback.rating;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Feedback'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RatingBar.builder(
+                initialRating: newRating,
+                minRating: 0,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star_rate_rounded,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  newRating = rating;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: commentController,
+                decoration: const InputDecoration(
+                  hintText: 'Comment',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                final updatedFeedback = FeedbackModel(
+                  id: feedback.id,
+                  userId: feedback.userId,
+                  rating: newRating,
+                  comment: commentController.text,
+                  timestamp: DateTime.now(),
+                );
+                firestoreService.updateFeedback(updatedFeedback);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -331,11 +397,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                       margin: const EdgeInsets.symmetric(
                                           vertical: 5),
                                       child: ListTile(
-                                        title: Text(
-                                          feedback
-                                              .userId, // Assuming userId is the username
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              feedback.userId,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            PopupMenuButton<String>(
+                                              onSelected: (value) {
+                                                if (value == 'edit') {
+                                                  // Show dialog to edit feedback
+                                                  _showEditFeedbackDialog(
+                                                      feedback);
+                                                } else if (value == 'delete') {
+                                                  // Delete feedback
+                                                  firestoreService
+                                                      .deleteFeedback(
+                                                          feedback.id);
+                                                }
+                                              },
+                                              itemBuilder:
+                                                  (BuildContext context) {
+                                                return [
+                                                  const PopupMenuItem(
+                                                    value: 'edit',
+                                                    child: Text('Edit'),
+                                                  ),
+                                                  const PopupMenuItem(
+                                                    value: 'delete',
+                                                    child: Text('Delete'),
+                                                  ),
+                                                ];
+                                              },
+                                            ),
+                                          ],
                                         ),
                                         subtitle: Column(
                                           crossAxisAlignment:
@@ -409,6 +507,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 
 
 

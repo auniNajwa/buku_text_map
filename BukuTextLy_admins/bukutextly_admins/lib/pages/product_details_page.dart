@@ -1,5 +1,6 @@
 import 'package:bukutextly_admins/pages/edit_product_page.dart';
 import 'package:bukutextly_admins/utils/firestore_service.dart';
+import 'package:bukutextly_admins/utils/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

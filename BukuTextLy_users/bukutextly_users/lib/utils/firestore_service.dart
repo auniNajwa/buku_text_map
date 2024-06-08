@@ -98,6 +98,25 @@ class FirestoreService {
     }
   }
 
+  Future<void> updateFeedback(FeedbackModel feedback) async {
+    try {
+      await _db
+          .collection('feedbacks')
+          .doc(feedback.id)
+          .update(feedback.toFirestore());
+    } catch (e) {
+      print('Error updating feedback: $e');
+    }
+  }
+
+  Future<void> deleteFeedback(String feedbackId) async {
+    try {
+      await _db.collection('feedbacks').doc(feedbackId).delete();
+    } catch (e) {
+      print('Error deleting feedback: $e');
+    }
+  }
+
   Stream<List<FeedbackModel>> getUserFeedbacks(String userId) {
     return _db
         .collection('feedbacks')

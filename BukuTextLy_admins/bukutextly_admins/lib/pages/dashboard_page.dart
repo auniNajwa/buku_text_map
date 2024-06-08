@@ -111,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
                         Text(
-                          'RM 99',
+                          'RM 00',
                           style: TextStyle(
                             fontFamily: 'Readex Pro',
                             fontSize: 18,
@@ -221,11 +221,11 @@ class _DashboardPageState extends State<DashboardPage> {
                               const FlSpot(6, 10),
                             ],
                             isCurved: true,
-                            colors: Colors.white,
+                            color: Colors.white,
                             barWidth: 2,
                             belowBarData: BarAreaData(
                               show: true,
-                              colors: const Color(0xFFC9B09A),
+                              color: const Color(0xFFC9B09A),
                             ),
                           ),
                         ],
@@ -272,6 +272,50 @@ class _DashboardPageState extends State<DashboardPage> {
                     padding: const EdgeInsetsDirectional.fromSTEB(25, 0, 0, 0),
                     child: Icon(
                       Icons.group,
+                      color: Theme.of(context).textTheme.bodyMedium!.color,
+                      size: 50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/'); //UBAH SINI
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFA77D54),
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontFamily: 'Readex Pro',
+                        fontSize: 20,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      elevation: 3,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                      minimumSize: Size(250, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      side: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1,
+                      ),
+                    ),
+                    child: const Text('REPORT'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(25, 0, 0, 0),
+                    child: Icon(
+                      Icons.add_chart,
                       color: Theme.of(context).textTheme.bodyMedium!.color,
                       size: 50,
                     ),

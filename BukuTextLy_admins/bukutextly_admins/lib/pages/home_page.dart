@@ -3,6 +3,7 @@ import 'package:bukutextly_admins/pages/notif_page.dart';
 import 'package:bukutextly_admins/pages/profile_page.dart';
 //import 'package:bukutextly_admins/pages/shopping_page.dart';
 import 'package:bukutextly_admins/utils/firestore_service.dart';
+import 'package:bukutextly_admins/utils/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
