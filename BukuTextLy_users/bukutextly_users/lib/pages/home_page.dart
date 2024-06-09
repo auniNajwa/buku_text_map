@@ -2,12 +2,15 @@ import 'package:bukutextly_users/components/product_box.dart';
 import 'package:bukutextly_users/pages/cart_page.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
+import 'package:bukutextly_users/pages/report_page.dart';
 // import 'package:bukutextly_users/pages/shopping_page.dart';
 import 'package:bukutextly_users/utils/firestore_service.dart';
 import 'package:bukutextly_users/utils/product_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,12 +20,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  int totalProducts = 0;
   int selectedIndex = 0;
 
   final List<Widget> listOfPages = [
     const HomePageContent(),
     const NotificationsPage(),
-    // const ShoppingPage(),
+    //const ReportPage(),
     const ProfilePage(),
   ];
 
@@ -30,6 +35,32 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  Future<void> fetchTotalProducts() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('products').get();
+      setState(() {
+        totalProducts = querySnapshot.docs.length;
+      });
+    } catch (e) {
+      print('Error fetching total products: $e');
+    }
+  }
+
+  Future<String> fetchUserUsername() async {
+    // Replace with your Firestore collection and document ID
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUser.email)
+        .get();
+
+    if (userDoc.exists) {
+      return userDoc['username'];
+    } else {
+      throw Exception('User not found');
+    }
   }
 
   @override
@@ -103,16 +134,49 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-                    // ListTile(
-                    //   leading: const Icon(
-                    //     Icons.shopping_bag_sharp,
-                    //     color: Colors.black,
-                    //   ),
-                    //   title: const Text('M A R K E T'),
-                    //   onTap: () {
-                    //     Navigator.pushNamed(context, '/shoppingpage');
-                    //   },
-                    // ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.add_chart,
+                        color: Colors.black,
+                      ),
+                      title: const Text('R E P O R T'),
+                      onTap: () async {
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   '/reports',
+                        //   arguments: ReportsPageArguments(
+                        //     adminUsername: adminUsername,
+                        //     date: currentDate,
+                        //     totalListings: totalProducts,
+                        //   ),
+                        // ); //UBAH SINI
+
+                        try {
+                          String userUsername = await fetchUserUsername();
+                          String currentDate = DateFormat('yyyy-MM-dd HH:mm')
+                              .format(DateTime.now());
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReportsPage(
+                                userUsername: userUsername,
+                                date: currentDate,
+                                totalListings: totalProducts,
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          // Handle errors (e.g., show a snackbar or dialog)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('Error fetching admin username: $e'),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     ListTile(
                       leading: const Icon(
                         Icons.settings,

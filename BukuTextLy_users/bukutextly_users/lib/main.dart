@@ -7,6 +7,7 @@ import 'package:bukutextly_users/pages/edit_profile_page.dart';
 import 'package:bukutextly_users/pages/home_page.dart';
 import 'package:bukutextly_users/pages/notif_page.dart';
 import 'package:bukutextly_users/pages/profile_page.dart';
+import 'package:bukutextly_users/pages/report_page.dart';
 import 'package:bukutextly_users/pages/settings_page.dart';
 import 'package:bukutextly_users/pages/shopping_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +38,34 @@ class MyApp extends StatelessWidget {
         '/editprofilepage': (context) => const EditProfilePage(),
         '/addproductpage': (context) => const AddProductPage(),
       },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/reports') {
+          final args = settings.arguments as ReportsPageArguments;
+          return MaterialPageRoute(
+            builder: (context) {
+              return ReportsPage(
+                userUsername: args.userUsername,
+                date: args.date,
+                totalListings: args.totalListings,
+              );
+            },
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      },
     );
   }
+}
+
+class ReportsPageArguments {
+  final String userUsername;
+  final String date;
+  final int totalListings;
+
+  ReportsPageArguments({
+    required this.userUsername,
+    required this.date,
+    required this.totalListings,
+  });
 }
