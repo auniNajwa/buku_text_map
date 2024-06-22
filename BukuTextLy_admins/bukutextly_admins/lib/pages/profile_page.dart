@@ -93,6 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 final updatedFeedback = FeedbackModel(
                   id: feedback.id,
                   userId: feedback.userId,
+                  userName: feedback.userName,
                   rating: newRating,
                   comment: commentController.text,
                   timestamp: DateTime.now(),
@@ -402,7 +403,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              feedback.userId,
+                                              '@${feedback.userName ?? "Unknown User"}',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -469,6 +470,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ],
+            ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackPage(),
+                    ),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: BorderSide(color: Colors.grey), // Border color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 12), // Padding inside the button
+                ),
+                child: Text(
+                  'Write a Review',
+                  style: TextStyle(
+                    color: Colors.teal, // Text color
+                    fontSize: 16, // Font size
+                  ),
+                ),
+              ),
             ),
           ],
         ),

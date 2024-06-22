@@ -1,6 +1,7 @@
 import 'package:bukutextly_admins/components/my_button.dart';
 import 'package:bukutextly_admins/utils/feedback_model.dart';
 import 'package:bukutextly_admins/utils/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -32,21 +33,67 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
   final _formKey = GlobalKey<FormState>();
   double _rating = 3.0;
   String _comment = '';
 
-  void _submitFeedback() {
+  Future<String?> _getUserName() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return null;
+    }
+    try {
+      // Reference to the Firestore collection
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('Admins')
+          .doc(currentUser.email)
+          .get();
+
+      if (userDoc.exists) {
+        // Cast the data to a Map<String, dynamic>
+        final data = userDoc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          return data['username'] as String?;
+        } else {
+          print('User data is null');
+          return null;
+        }
+      } else {
+        print('User not found');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+
+  void _submitFeedback() async {
+    // Fetch the username asynchronously
+    String? username = await _getUserName();
+
+    if (username == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to retrieve username.')),
+      );
+      return;
+    }
+
+    // Proceed if the form is valid
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final feedback = FeedbackModel(
         id: const Uuid().v4(),
         userId: FirebaseAuth.instance.currentUser!.uid,
+        userName: username,
         rating: _rating,
         comment: _comment,
         timestamp: DateTime.now(),
       );
+
       FirestoreService().addFeedback(feedback);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Feedback Submitted!')),
       );
