@@ -93,6 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 final updatedFeedback = FeedbackModel(
                   id: feedback.id,
                   userId: feedback.userId,
+                  userName: feedback.userName,
                   rating: newRating,
                   comment: commentController.text,
                   timestamp: DateTime.now(),
@@ -402,7 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              feedback.userId,
+                                              feedback.userName ??
+                                                  'Unknown User',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
