@@ -403,8 +403,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              feedback.userName ??
-                                                  'Unknown User',
+                                              '@${feedback.userName ?? "Unknown User"}',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),

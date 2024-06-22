@@ -42,7 +42,7 @@ class ReportsPage extends StatelessWidget {
                 _buildInfoRow('Date:', date),
                 const Divider(thickness: 1),
                 const SizedBox(height: 8),
-                _buildInfoRow('Total Listings:', totalListings.toString()),
+                _buildInfoRow('Total Sales:', "RM$totalListings"),
               ],
             ),
           ),
