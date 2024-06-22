@@ -4,6 +4,7 @@ import 'package:bukutextly_admins/firebase_options.dart';
 import 'package:bukutextly_admins/pages/chats_page.dart';
 import 'package:bukutextly_admins/pages/dashboard_page.dart';
 import 'package:bukutextly_admins/pages/edit_profile_page.dart';
+import 'package:bukutextly_admins/pages/forgot_password_page.dart';
 import 'package:bukutextly_admins/pages/home_page.dart';
 import 'package:bukutextly_admins/pages/notif_page.dart';
 import 'package:bukutextly_admins/pages/profile_page.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/editprofilepage': (context) => const EditProfilePage(),
         '/userslistpage': (context) => const UsersListPage(),
         '/dashboardpage': (context) => const DashboardPage(),
+        '/forgotpasswordpage': (context) => const ForgotPasswordPage(),
         //'/reports': (context) => const ReportsPage(),
       },
       onGenerateRoute: (settings) {

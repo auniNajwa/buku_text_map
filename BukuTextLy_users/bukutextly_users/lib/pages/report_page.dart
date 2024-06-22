@@ -32,7 +32,7 @@ class ReportsPage extends StatelessWidget {
               children: [
                 Text(
                   'Report Details',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Divider(thickness: 2),
                 const SizedBox(height: 16),

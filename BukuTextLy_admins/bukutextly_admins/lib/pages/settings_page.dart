@@ -59,7 +59,7 @@ class _SettingspageState extends State<Settingspage> {
                     title: const Text("Change Password"),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
-                      Navigator.pushNamed(context, '**');
+                      Navigator.pushNamed(context, '/forgotpasswordpage');
                       //PERGI
                     },
                   ),
@@ -70,7 +70,7 @@ class _SettingspageState extends State<Settingspage> {
                     title: const Text("Notifications"),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
-                      Navigator.pushNamed(context, '**');
+                      Navigator.pushNamed(context, '/notifpage');
                       //PERGI
                     },
                   ),
